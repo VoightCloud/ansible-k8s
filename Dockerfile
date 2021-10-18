@@ -54,9 +54,13 @@ RUN curl -L -o /usr/bin/kubectl "https://dl.k8s.io/release/v1.21.5/bin/linux/amd
 RUN chmod 755 /usr/bin/kubectl
 RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+RUN mkdir -p /root/.kube
+
+ENV PATH="/usr/local/bin:${PATH}"
+
 WORKDIR /ansible/playbooks
 
-VOLUME [ "/ansible/playbooks" ]
+VOLUME [ "/ansible/playbooks" , "/root/.kube"]
 
 # default command: display Ansible version
 CMD [ "ansible-playbook", "--version" ]
