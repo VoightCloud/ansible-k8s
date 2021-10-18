@@ -50,6 +50,10 @@ RUN pip3 install --no-cache-dir --upgrade mitogen
 
 RUN mkdir -p /ansible/playbooks
 
+RUN curl -L -o /usr/bin/kubectl "https://dl.k8s.io/release/v1.21.5/bin/linux/amd64/kubectl"
+RUN chmod 755 /usr/bin/kubectl
+RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
 WORKDIR /ansible/playbooks
 
 VOLUME [ "/ansible/playbooks" ]
