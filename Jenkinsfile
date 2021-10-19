@@ -90,7 +90,7 @@ stage('Build') {
                         sh "docker pull voight/docker-ansible:arm64-latest"
                         sh "docker pull voight/docker-ansible:amd64-latest"
                         sh "env"
-                        sh "ls /etc/docker/certs.d/"
+                        sh "ls /etc/docker/"
                        sh "docker -D --tls --tlscacert=/certs/client/voight-ca.pem manifest create nexus.voight.org:9042/voight/docker-ansible:latest -a nexus.voight.org:9042/voight/docker-ansible:amd64-latest -a nexus.voight.org:9042/voight/docker-ansible:arm64-latest"
                        sh "docker --tlscacert=/certs/client/voight-ca.pem manifest push nexus.voight.org:9042/voight/docker-ansible:latest"
                     }
