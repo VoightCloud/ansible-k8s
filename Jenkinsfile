@@ -11,7 +11,7 @@ stage('Build') {
                             alwaysPullImage: false,
                             ttyEnabled: true,
                             command: 'cat',
-                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock"),containerEnvVar(key: 'DOCKER_TLS_CERT_PATH', value: "/certs/client")],
+                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock"),containerEnvVar(key: 'DOCKER_TLS_CERTDIR', value: "/certs/client")],
                             privileged: true),
                     containerTemplate(name: 'jnlp', image: 'jenkins/inbound-agent:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}'),
             ],
@@ -56,7 +56,7 @@ stage('Build') {
                             alwaysPullImage: false,
                             ttyEnabled: true,
                             command: 'cat',
-                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock"),containerEnvVar(key: 'DOCKER_TLS_CERT_PATH', value: "/certs/client")],
+                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock"),containerEnvVar(key: 'DOCKER_TLS_CERTDIR, value: "/certs/client")],
                             privileged: true),
                     containerTemplate(name: 'jnlp', image: 'jenkins/inbound-agent:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}'),
             ],
@@ -91,8 +91,8 @@ stage('Build') {
                         sh "docker pull voight/docker-ansible:amd64-latest"
                         sh "env"
                         sh "ls /certs/client/*voight*"
-                       sh "docker --tlscacert=/certs/ca/ca-voight.pem manifest create nexus.voight.org:9042/voight/docker-ansible:latest -a nexus.voight.org:9042/voight/docker-ansible:amd64-latest -a nexus.voight.org:9042/voight/docker-ansible:arm64-latest"
-                       sh "docker --tlscacert=/certs/ca/ca-voight.pem manifest push nexus.voight.org:9042/voight/docker-ansible:latest"
+                       sh "docker --tlscacert=/certs/client/ca-voight.pem manifest create nexus.voight.org:9042/voight/docker-ansible:latest -a nexus.voight.org:9042/voight/docker-ansible:amd64-latest -a nexus.voight.org:9042/voight/docker-ansible:arm64-latest"
+                       sh "docker --tlscacert=/certs/client/ca-voight.pem manifest push nexus.voight.org:9042/voight/docker-ansible:latest"
                     }
                 }
 
