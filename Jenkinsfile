@@ -11,7 +11,7 @@ stage('Build') {
                             alwaysPullImage: false,
                             ttyEnabled: true,
                             command: 'cat',
-                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock")],//,containerEnvVar(key: 'DOCKER_TLS_CERTDIR', value: "/certs")],
+                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock"),containerEnvVar(key: 'DOCKER_TLS_CERTDIR', value: "/certs")],
                             privileged: true),
                     containerTemplate(name: 'jnlp', image: 'jenkins/inbound-agent:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}'),
             ],
@@ -56,15 +56,15 @@ stage('Build') {
                             alwaysPullImage: false,
                             ttyEnabled: true,
                             command: 'cat',
-                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock")],//,containerEnvVar(key: 'DOCKER_TLS_CERTDIR', value: "/certs")],
+                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock"),containerEnvVar(key: 'DOCKER_TLS_CERTDIR', value: "/certs")],
                             privileged: true),
                     containerTemplate(name: 'jnlp', image: 'jenkins/inbound-agent:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}'),
             ],
             volumes: [
                     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/ca'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/client'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/server')
+                    hostPathVolume(hostPath: '/usr/local/share/ca-certificates/', mountPath: '/certs/ca'),
+                    hostPathVolume(hostPath: '/usr/local/share/ca-certificates/', mountPath: '/certs/client'),
+                    hostPathVolume(hostPath: '/usr/local/share/ca-certificates/', mountPath: '/certs/server')
             ],
             nodeSelector: 'kubernetes.io/arch=amd64'
     ) {
