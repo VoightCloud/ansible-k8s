@@ -56,7 +56,7 @@ stage('Build') {
                             alwaysPullImage: false,
                             ttyEnabled: true,
                             command: 'cat',
-                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock"),containerEnvVar(key: 'DOCKER_TLS_CERTDIR, value: "/certs/client")],
+                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock"),containerEnvVar(key: 'DOCKER_TLS_CERTDIR', value: "/certs/client")],
                             privileged: true),
                     containerTemplate(name: 'jnlp', image: 'jenkins/inbound-agent:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}'),
             ],
