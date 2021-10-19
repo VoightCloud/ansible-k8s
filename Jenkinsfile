@@ -89,7 +89,8 @@ stage('Build') {
                         image.push("amd64-latest")
                         sh "docker pull voight/docker-ansible:arm64-latest"
                         sh "docker pull voight/docker-ansible:amd64-latest"
-
+                        sh "env"
+                        sh "ls /certs/client/*voight*"
                        sh "docker manifest create nexus.voight.org:9042/voight/docker-ansible:latest -a nexus.voight.org:9042/voight/docker-ansible:amd64-latest -a nexus.voight.org:9042/voight/docker-ansible:arm64-latest"
                        sh "docker manifest push nexus.voight.org:9042/voight/docker-ansible:latest"
                     }
