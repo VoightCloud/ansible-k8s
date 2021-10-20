@@ -2,6 +2,10 @@ def labelArm = "docker-ansible-build-arm64${UUID.randomUUID().toString()}"
 def labelx86_64 = "docker-ansible-build-x86_64${UUID.randomUUID().toString()}"
 
 def imageVersion="1.0"
+def imageName="ansible-k8s"
+def imageRepo="voight"
+def nexusServer="nexus.voight.org:9042"
+
 stage('Build') {
     podTemplate(
             label: labelArm,
@@ -35,8 +39,8 @@ stage('Build') {
             }
             stage('Push') {
                 container('docker') {
-                    docker.withRegistry('https://nexus.voight.org:9042', 'NexusDockerLogin') {
-                        image = docker.build("voight/docker-ansible:${imageVersion}-arm64")
+                    docker.withRegistry(nexusServer, 'NexusDockerLogin') {
+                        image = docker.build("${imageRepo}/${imageName}:${imageVersion}-arm64")
                         image.push("${imageVersion}-arm64")
                         image.push("arm64-latest")
                     }
@@ -77,21 +81,26 @@ stage('Build') {
             }
             stage('Push') {
                 container('docker') {
-                    docker.withRegistry('https://nexus.voight.org:9042', 'NexusDockerLogin') {
-                        image = docker.build("voight/docker-ansible:${imageVersion}-amd64")
+                    docker.withRegistry(nexusServer, 'NexusDockerLogin') {
+                        image = docker.build("${imageRepo}/${imageName}:${imageVersion}-amd64")
                         image.push("${imageVersion}-amd64")
                         image.push("amd64-latest")
-                        sh "docker pull voight/docker-ansible:arm64-latest"
-                        sh "docker pull voight/docker-ansible:amd64-latest"
-
-                        sh "docker manifest create --insecure nexus.voight.org:9042/voight/docker-ansible:latest -a nexus.voight.org:9042/voight/docker-ansible:amd64-latest -a nexus.voight.org:9042/voight/docker-ansible:arm64-latest"
-                        sh "docker manifest push --insecure nexus.voight.org:9042/voight/docker-ansible:latest"
-
-                        sh "docker manifest create --insecure nexus.voight.org:9042/voight/docker-ansible:${imageVersion} -a nexus.voight.org:9042/voight/docker-ansible:${imageVersion}-amd64 -a nexus.voight.org:9042/voight/docker-ansible:${imageVersion}-arm64"
-                        sh "docker manifest push --insecure nexus.voight.org:9042/voight/docker-ansible:${imageVersion}"
                     }
                 }
+            }
 
+            stage('Manifest') {
+                container('docker') {
+                 //       sh "docker pull ${imageRepo}/${imageName}:arm64-latest"
+                        //sh "docker pull ${imageRepo}/${imageName}:amd64-latest"
+
+                        sh "docker manifest create --insecure ${nexusServer}/${imageRepo}/${imageName}:latest -a ${nexusServer}/${imageRepo}/${imageName}:amd64-latest -a ${nexusServer}/${imageRepo}/${imageName}:arm64-latest"
+                        sh "docker manifest push --insecure ${nexusServer}/${imageRepo}/${imageName}:latest"
+
+                        sh "docker manifest create --insecure ${nexusServer}/${imageRepo}/${imageName}:${imageVersion} -a ${nexusServer}/${imageRepo}/${imageName}:${imageVersion}-amd64 -a ${nexusServer}/${imageRepo}/${imageName}:${imageVersion}-arm64"
+                        sh "docker manifest push --insecure ${nexusServer}/${imageRepo}/${imageName}:${imageVersion}"
+                    }
+                }
             }
         }
     }
