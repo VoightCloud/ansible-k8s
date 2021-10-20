@@ -86,6 +86,9 @@ stage('Build') {
 
                         sh "docker manifest create --insecure nexus.voight.org:9042/voight/docker-ansible:latest -a nexus.voight.org:9042/voight/docker-ansible:amd64-latest -a nexus.voight.org:9042/voight/docker-ansible:arm64-latest"
                         sh "docker manifest push --insecure nexus.voight.org:9042/voight/docker-ansible:latest"
+
+                        sh "docker manifest create --insecure nexus.voight.org:9042/voight/docker-ansible:${imageVersion} -a nexus.voight.org:9042/voight/docker-ansible:${imageVersion}-amd64 -a nexus.voight.org:9042/voight/docker-ansible:${imageVersion}-arm64"
+                        sh "docker manifest push --insecure nexus.voight.org:9042/voight/docker-ansible:${imageVersion}"
                     }
                 }
 
