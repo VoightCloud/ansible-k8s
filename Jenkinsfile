@@ -1,5 +1,5 @@
-def labelArm = "docker-ansible-build-arm64${UUID.randomUUID().toString()}"
-def labelx86_64 = "docker-ansible-build-x86_64${UUID.randomUUID().toString()}"
+def labelArm = "docker-build-arm64${UUID.randomUUID().toString()}"
+def labelx86_64 = "docker-build-x86_64${UUID.randomUUID().toString()}"
 
 def imageVersion = "1.0"
 def imageName = "ansible-k8s"
