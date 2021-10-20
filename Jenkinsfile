@@ -1,7 +1,7 @@
 def labelArm = "docker-ansible-build-arm64${UUID.randomUUID().toString()}"
 def labelx86_64 = "docker-ansible-build-x86_64${UUID.randomUUID().toString()}"
 
-
+def imageVersion="1.0"
 stage('Build') {
     podTemplate(
             label: labelArm,
@@ -36,8 +36,8 @@ stage('Build') {
             stage('Push') {
                 container('docker') {
                     docker.withRegistry('https://nexus.voight.org:9042', 'NexusDockerLogin') {
-                        image = docker.build("voight/docker-ansible:arm64")
-                        image.push("arm64")
+                        image = docker.build("voight/docker-ansible:${imageVersion}-arm64")
+                        image.push("${imageVersion}-arm64")
                         image.push("arm64-latest")
                     }
                 }
@@ -78,8 +78,8 @@ stage('Build') {
             stage('Push') {
                 container('docker') {
                     docker.withRegistry('https://nexus.voight.org:9042', 'NexusDockerLogin') {
-                        image = docker.build("voight/docker-ansible:amd64")
-                        image.push("amd64")
+                        image = docker.build("voight/docker-ansible:${imageVersion}-amd64")
+                        image.push("${imageVersion}-amd64")
                         image.push("amd64-latest")
                         sh "docker pull voight/docker-ansible:arm64-latest"
                         sh "docker pull voight/docker-ansible:amd64-latest"
