@@ -37,6 +37,7 @@ stage('Build') {
                 env.GIT_BRANCH = scmVars.GIT_BRANCH
                 env.GIT_COMMIT = scmVars.GIT_COMMIT
             }
+
             stage('Push') {
                 container('docker') {
                     docker.withRegistry("https://${nexusServer}", 'NexusDockerLogin') {
@@ -80,6 +81,7 @@ stage('Build') {
                 env.GIT_BRANCH = scmVars.GIT_BRANCH
                 env.GIT_COMMIT = scmVars.GIT_COMMIT
             }
+
             stage('Push') {
                 container('docker') {
                     docker.withRegistry("https://${nexusServer}", 'NexusDockerLogin') {
@@ -105,5 +107,5 @@ stage('Build') {
             }
         }
     }
-}
+
 
