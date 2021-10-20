@@ -94,18 +94,19 @@ stage('Build') {
 
             stage('Manifest') {
                 container('docker') {
-                 //       sh "docker pull ${imageRepo}/${imageName}:arm64-latest"
-                        //sh "docker pull ${imageRepo}/${imageName}:amd64-latest"
+                    docker.withRegistry("https://${nexusServer}", 'NexusDockerLogin') {
+                        sh "docker pull ${imageRepo}/${imageName}:arm64-latest"
+                        sh "docker pull ${imageRepo}/${imageName}:amd64-latest"
 
                         sh "docker manifest create --insecure ${nexusServer}/${imageRepo}/${imageName}:latest -a ${nexusServer}/${imageRepo}/${imageName}:amd64-latest -a ${nexusServer}/${imageRepo}/${imageName}:arm64-latest"
                         sh "docker manifest push --insecure ${nexusServer}/${imageRepo}/${imageName}:latest"
 
                         sh "docker manifest create --insecure ${nexusServer}/${imageRepo}/${imageName}:${imageVersion} -a ${nexusServer}/${imageRepo}/${imageName}:${imageVersion}-amd64 -a ${nexusServer}/${imageRepo}/${imageName}:${imageVersion}-arm64"
                         sh "docker manifest push --insecure ${nexusServer}/${imageRepo}/${imageName}:${imageVersion}"
-                    }
                 }
             }
         }
     }
+}
 
 
