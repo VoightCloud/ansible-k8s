@@ -11,15 +11,12 @@ stage('Build') {
                             alwaysPullImage: false,
                             ttyEnabled: true,
                             command: 'cat',
-                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock"),containerEnvVar(key: 'DOCKER_TLS_CERTDIR', value: "/certs/client")],
+                            envVars: [containerEnvVar(key: 'DOCKER_HOST', value: "unix:///var/run/docker.sock")],
                             privileged: true),
                     containerTemplate(name: 'jnlp', image: 'jenkins/inbound-agent:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}'),
             ],
             volumes: [
-                    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/ca'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/server'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/client')
+                    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
             ],
             nodeSelector: 'kubernetes.io/arch=arm64'
     ) {
