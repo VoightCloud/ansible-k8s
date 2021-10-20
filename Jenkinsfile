@@ -1,10 +1,10 @@
 def labelArm = "docker-ansible-build-arm64${UUID.randomUUID().toString()}"
 def labelx86_64 = "docker-ansible-build-x86_64${UUID.randomUUID().toString()}"
 
-def imageVersion="1.0"
-def imageName="ansible-k8s"
-def imageRepo="voight"
-def nexusServer="nexus.voight.org:9042"
+def imageVersion = "1.0"
+def imageName = "ansible-k8s"
+def imageRepo = "voight"
+def nexusServer = "nexus.voight.org:9042"
 
 stage('Build') {
     podTemplate(
@@ -39,7 +39,7 @@ stage('Build') {
             }
             stage('Push') {
                 container('docker') {
-                    docker.withRegistry(nexusServer, 'NexusDockerLogin') {
+                    docker.withRegistry("${nexusServer}", 'NexusDockerLogin') {
                         image = docker.build("${imageRepo}/${imageName}:${imageVersion}-arm64")
                         image.push("${imageVersion}-arm64")
                         image.push("arm64-latest")
@@ -81,7 +81,7 @@ stage('Build') {
             }
             stage('Push') {
                 container('docker') {
-                    docker.withRegistry(nexusServer, 'NexusDockerLogin') {
+                    docker.withRegistry("${nexusServer}", 'NexusDockerLogin') {
                         image = docker.build("${imageRepo}/${imageName}:${imageVersion}-amd64")
                         image.push("${imageVersion}-amd64")
                         image.push("amd64-latest")
@@ -104,4 +104,4 @@ stage('Build') {
             }
         }
     }
-}
+
