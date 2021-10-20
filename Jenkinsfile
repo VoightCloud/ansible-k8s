@@ -103,6 +103,7 @@ stage('Build') {
 
                         sh "docker manifest create --insecure ${nexusServer}/${imageRepo}/${imageName}:${imageVersion} -a ${nexusServer}/${imageRepo}/${imageName}:${imageVersion}-amd64 -a ${nexusServer}/${imageRepo}/${imageName}:${imageVersion}-arm64"
                         sh "docker manifest push --insecure ${nexusServer}/${imageRepo}/${imageName}:${imageVersion}"
+                    }
                 }
             }
         }
