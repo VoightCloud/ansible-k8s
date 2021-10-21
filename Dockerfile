@@ -47,6 +47,7 @@ RUN apk --no-cache --update add \
 RUN pip3 install --no-cache-dir --upgrade yq
 
 RUN pip3 install --no-cache-dir --upgrade mitogen
+RUN ansible-galaxy collection install community.kubernetes
 
 RUN mkdir -p /ansible/playbooks
 
