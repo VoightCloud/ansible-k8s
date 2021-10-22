@@ -1,6 +1,6 @@
 FROM alpine:3.11
 
-LABEL maintainer="zoltan@mullner.hu"
+LABEL maintainer="jeff@voight.org"
 
 RUN echo "===> Installing sudo to emulate normal OS behavior..."  && \
     apk --update add sudo                                         && \
@@ -48,6 +48,8 @@ RUN pip3 install --no-cache-dir --upgrade yq
 
 RUN pip3 install --no-cache-dir --upgrade mitogen
 RUN ansible-galaxy collection install community.kubernetes
+
+RUN pip3 install openshift
 
 RUN mkdir -p /ansible/playbooks
 
