@@ -1,7 +1,7 @@
 def labelArm = "docker-build-arm64${UUID.randomUUID().toString()}"
 def labelx86_64 = "docker-build-x86_64${UUID.randomUUID().toString()}"
 
-def imageVersion = "1.5"
+def imageVersion = "1.4"
 def imageName = "ansible-k8s"
 def imageRepo = "voight"
 def nexusServer = "nexus.voight.org:9042"
